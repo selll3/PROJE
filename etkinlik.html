@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Etkinlik Takvimi</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f7f7f7;
+      margin: 0;
+      height: 100vh;
+      justify-content: flex-start;
+    }
+
+    #calendar {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      max-width: 600px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #ffd2f4;
+      color: rgb(0, 0, 0);
+    }
+
+    td {
+      cursor: pointer;
+    }
+
+    .selectable:hover {
+      background-color: #e0f2f1;
+    }
+
+    #selected-dates {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #add-button,
+    #save-button {
+      background-color: #ffd2f4;
+      border: none;
+      color: #000000;
+      padding: 10px 15px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin-top: 10px;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+
+    #add-button:hover,
+    #save-button:hover {
+      background-color: #ffd2f4;
+    }
+
+    #saved-dates {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #saved-dates p {
+      margin: 0;
+    }
+
+    #month-selector {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      justify-content: space-between;
+      background-color: #ffd2f4;
+      color: rgb(0, 0, 0);
+      padding: 10px;
+      width: 100%;
+    }
+
+    #prev-month,
+    #next-month {
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    #current-month {
+      font-size: 18px;
+      margin: 0;
+    }
+
+    #selected-info {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    #time-selector {
+      width: 100%;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="month-selector">
+    <span id="prev-month" onclick="changeMonth(-1)">&#9665;</span>
+    <h2 id="current-month">Ocak 2024</h2>
+    <span id="next-month" onclick="changeMonth(1)">&#9655;</span>
+  </div>
+
+  <div id="calendar">
+    <table>
+      <thead>
+        <tr>
+          <th>Pzt</th>
+          <th>Sal</th>
+          <th>Çar</th>
+          <th>Per</th>
+          <th>Cum</th>
+          <th>Cmt</th>
+          <th>Paz</th>
+        </tr>
+      </thead>
+      <tbody id="calendar-body">
+        <!-- Günler buraya gelecek -->
+      </tbody>
+    </table>
+
+    <div id="selected-info">
+      <p id="selected-date-info"></p>
+      <div id="time-selector">
+        <label for="time">Saat Seçimi:</label>
+        <input type="time" id="time">
+      </div>
+    </div>
+
+    <div id="saved-dates">
+      <p id="saved-dates-info">Eklenilen Tarihler:</p>
+      <div id="saved-dates-list"></div>
+    </div>
+
+    <div id="selected-dates"></div>
+    <div style="display: flex; margin-top: 10px;">
+      <button id="save-button" onclick="redirectAndSave()">Ekle</button>
+    </div>
+  </div>
+
+  <script>
+    let selectedDates = [];
+    let currentMonth = 0; // Ocak
+    let selectedTime = [];
+
+    function addSelectedDates() {
+  const selectedDatesContainer = document.getElementById('selected-dates');
+
+  if (selectedTime === "") {
+    alert("Lütfen saat seçimi yapınız.");
+    return;
+  }
+
+  if (selectedDates.length === 0) {
+    alert("Lütfen en az bir tarih seçiniz.");
+    return;
+  }
+
+  // Seçilen tarihleri ve saatleri birleştirerek eklenen satırı oluştur
+  const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTime}`);
+  const newRow = document.createElement('p');
+  newRow.textContent = formattedSelectedDates.join(', ');
+
+  // Eski satırları silmeden yeni satırı ekleyin
+  selectedDatesContainer.appendChild(newRow);
+
+  // Seçilen tarihleri ve saatleri oylamaolustur.html sayfasına gönder
+  const queryString = `selectedDates=${encodeURIComponent(JSON.stringify(selectedDates))}&selectedTime=${encodeURIComponent(selectedTime)}`;
+  const oylamaOluşturURL = `oylamaolustur.html?${queryString}`;
+  window.location.href = oylamaOluşturURL;
+}
+    function redirectAndSave() {
+      addSelectedDates();
+
+      // Bu kısımda eklenen kod
+      const selectedDatesList = document.getElementById('saved-dates-list');
+      const etkinlikTarihiInput = document.getElementById('etkinlikTarihi');
+
+      // Her tıklamada yeni bir satır ekleniyor
+      for (const selectedDate of selectedDates) {
+        const formattedDate = formatDate(new Date(selectedDate));
+        selectedDatesList.innerHTML += `<p>${formattedDate} ${selectedTime}</p>`;
+      }
+
+      // Text box'a alt alta eklemek için yeni bir satır ekleniyor
+      etkinlikTarihiInput.value += '\n' + selectedDates.map(date => `${date} ${selectedTime}`).join('\n');
+
+      // Yönlendirme mantığınızı buraya ekleyin
+      alert("Eklendi!");
+    }
+
+    function changeMonth(step) {
+      currentMonth += step;
+      if (currentMonth < 0) {
+        currentMonth = 0;
+      } else if (currentMonth > 11) {
+        currentMonth = 11;
+      }
+
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const calendarBody = document.getElementById('calendar-body');
+      calendarBody.innerHTML = '';
+
+      const daysInMonth = new Date(2024, currentMonth + 1, 0).getDate();
+      const firstDayOfMonth = new Date(2024, currentMonth, 1).getDay();
+      const startingDay = (firstDayOfMonth + 6) % 7;
+
+      let dayCounter = 1;
+
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement('tr');
+        for (let j = 0; j < 7; j++) {
+          if (i === 0 && j < startingDay) {
+            row.innerHTML += '<td></td>';
+          } else if (dayCounter <= daysInMonth) {
+            const date = new Date(2024, currentMonth, dayCounter);
+            const formattedDate = formatDate(date);
+
+            const isSelectable = date.getMonth() === currentMonth;
+            const selectableClass = isSelectable ? 'selectable' : '';
+
+            row.innerHTML += `<td class="${selectableClass}" data-date="${formattedDate}">${dayCounter}</td>`;
+            dayCounter++;
+          } else {
+            row.innerHTML += '<td></td>';
+          }
+        }
+        calendarBody.appendChild(row);
+      }
+
+      document.getElementById('current-month').textContent = getMonthName(currentMonth) + ' 2024';
+
+      document.querySelectorAll('.selectable').forEach(item => {
+        item.addEventListener('click', function () {
+          const selectedDate = this.getAttribute('data-date');
+
+          if (!selectedDates.includes(selectedDate)) {
+            selectedDates.push(selectedDate);
+            this.style.backgroundColor = '#a0d468';
+            updateSelectedInfo(selectedDate);
+          } else {
+            selectedDates = selectedDates.filter(date => date !== selectedDate);
+            this.style.backgroundColor = '';
+            updateSelectedInfo("");
+          }
+        });
+      });
+    }
+
+    function updateSelectedInfo(selectedDate) {
+      const selectedDateInfo = document.getElementById('selected-date-info');
+      selectedDateInfo.textContent = selectedDate ? `Seçilen Tarih: ${selectedDate} ${selectedTime}` : "";
+    }
+
+    function getMonthName(monthIndex) {
+      const monthNames = ['Ocak', 'Şubat', 'Mart', 'Nisan', 'Mayıs', 'Haziran', 'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
+      return monthNames[monthIndex];
+    }
+
+    function formatDate(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      return `${day < 10 ? '0' + day : day}-${month < 10 ? '0' + month : month}-${year}`;
+    }
+
+    document.getElementById('time').addEventListener('input', function () {
+      selectedTime = this.value;
+      updateSelectedInfo(selectedDates[selectedDates.length - 1]);
+    });
+
+    renderCalendar();
+  </script>
+
+</body>
+
+</html>
+

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/giris.css">
+    <title>Oylama Oluştur</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .nav {
+            background-color: #fffcfc;
+            color: #0f0202;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .logo {
+            display: inline-block;
+        }
+
+        .logo a {
+            color: #000000;
+            text-decoration: none;
+            font-size: 24px;
+        }
+
+        .right-links {
+            display: inline-block;
+            float: right;
+            margin-top: 5px;
+        }
+
+        .oylama-form {
+            max-width: 600px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            display: grid;
+            gap: 15px;
+        }
+
+        label {
+            font-size: 16px;
+            color: #333;
+        }
+
+        input {
+            width: calc(100% - 20px);
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .btn {
+            font-size: 16px;
+            color: #000000;
+            background-color: #ffb8ed;
+            border: none;
+            padding: 10px 15px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav">
+        <div class="logo">
+            <p><a href="profil.php">Choice</a></p>
+        </div>
+        <div class="right-links">
+            <!-- You can add navigation links here if needed -->
+        </div>
+    </div>
+
+    <div class="oylama-form">
+        <h2>Oylama Oluştur</h2>
+        <form method="post" action="">
+          <label for="oylamaAdi">ETKİNLİK ADI:</label>
+          <input type="text" id="oylamaAdi" name="oylamaAdi" required>
+    
+          <label for="secenekler">Davetli Kişiler:</label>
+          <input type="text" id="secenekler" name="secenekler" required>
+        </form>
+      </div>
+    
+      <div class="oylama-form">
+        <a href="etkinlik.html"><button class="btn">Etkinlik tarihi:</button></a>
+        <input type="text" id="etkinlikTarihi" name="etkinlikTarihi" required>
+        <a href="oylama.html"><button class="btn" value="Oylama Oluştur" requried>Oylama Oluştur:</button></a>
+      </div>
+    
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const urlParams = new URLSearchParams(window.location.search);
+          const selectedDatesParam = urlParams.get('selectedDates');
+          const selectedTimeParam = urlParams.get('selectedTime');
+          
+          if (selectedDatesParam && selectedTimeParam) {
+            const selectedDates = JSON.parse(decodeURIComponent(selectedDatesParam));
+            const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTimeParam}`);
+            const etkinlikTarihiInput = document.getElementById('etkinlikTarihi');
+            etkinlikTarihiInput.value = formattedSelectedDates.join(', ');
+          }
+        });
+      </script>
+    
+    </body>
+    </html>

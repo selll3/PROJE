@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oylama</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            margin: 40px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 400px;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0;
+            font-weight: bold;
+            color: #555;
+            font-size: 18px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            background-color: #ffd2f4;
+            color: #000000;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ffd2f4;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Etkinlik Adı İçin Oy Kullan</h1>
+
+    <form action="#" method="post">
+        <label for="tarih1">Tarih 1</label>
+        <input type="radio" name="selectedDate" id="tarih1" value="tarih1">
+
+        <label for="tarih2">Tarih 2</label>
+        <input type="radio" name="selectedDate" id="tarih2" value="tarih2">
+
+        <label for="tarih3">Tarih 3</label>
+        <input type="radio" name="selectedDate" id="tarih3" value="tarih3">
+
+        <br>
+
+        <input type="submit" value="Oyla">
+    </form>
+
+</body>
+</html>

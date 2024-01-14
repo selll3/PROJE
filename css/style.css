@@ -17,7 +17,7 @@ body{
 #logo{
     font-size: 30px;
     line-height: 80px;
-    color:cadetblue;
+    color: #ffb8ed;
     float: left;
 
 }
@@ -30,20 +30,20 @@ nav{
 nav a:link{
     text-decoration: none;
     margin-right: 25px;
-    color:cadetblue;
+    color: #ffb8ed;
 
     
 }
 
 nav a:hover{
-  border-bottom: 2px solid cadetblue;
+  border-bottom: 2px solid #ffb8ed;
 
 }
 
 nav a:visited{
     text-decoration: none;
     margin-right: 25px;
-    color:cadetblue;
+    color: #ffb8ed;
 }
 
 .ikon{
@@ -72,7 +72,7 @@ nav a:visited{
     color: white;
     font-size: 20px;
 }
-#ChoiceNedir?{
+#ChoiceNedir{
     background-color: #f8f9fa;
     padding: 50px;
     text-align: center;
@@ -81,7 +81,7 @@ nav a:visited{
 }
 h3{
     font-size: 55px;
-    color:cadetblue;
+    color: #ffb8ed;
     font-weight: 600;
 }
 #container{
@@ -106,7 +106,7 @@ span{
 #sag{
     float:center;
     width: 750px;
-    color: #999999;
+    color: #ffb8ed;
     text-align: center;
     letter-spacing: 1px;
     font-size: 15px;

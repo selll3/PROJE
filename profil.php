@@ -59,8 +59,9 @@ if(!isset($_SESSION['valid'])){
         
         
         
-        <a href="etkinlikolustur.html"> <button class="btn">Etkinlik olustur</button></a>
         
+        <a href="oylamaolustur.html"> <button class="btn">Oylama Oluştur</button></a>
+
         <a href="php/cikis.php"> <button class="btn">Cikis yap</button></a>
     </div>
     </div>
