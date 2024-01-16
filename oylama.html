@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Oylama</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             background-color: #f4f4f4;
             text-align: center;
-            margin: 40px;
+            margin: 0;
+            padding: 20px;
         }
 
         h1 {
@@ -38,7 +40,7 @@
             margin-right: 5px;
         }
 
-        input[type="submit"] {
+        input[type="button"] {
             background-color: #ffd2f4;
             color: #000000;
             padding: 12px 25px;
@@ -47,18 +49,42 @@
             cursor: pointer;
             font-size: 16px;
             margin-top: 15px;
+            transition: background-color 0.3s ease;
         }
 
-        input[type="submit"]:hover {
-            background-color: #ffd2f4;
+        input[type="button"]:hover {
+            background-color: #ffafda;
+        }
+
+        #oySonuclari {
+            margin-top: 20px;
+            text-align: left;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            width: 400px;
+            margin: auto;
+            overflow: hidden;
+        }
+
+        #oySonuclari h2 {
+            color: #333;
+        }
+
+        #oySonuclari p {
+            margin: 8px 0;
+            font-size: 16px;
         }
     </style>
 </head>
+
 <body>
 
-    <h1>Etkinlik Adı İçin Oy Kullan</h1>
+    <h1>Oy Kullan</h1>
 
-    <form action="#" method="post">
+    <form id="oylamaForm" action="#">
         <label for="tarih1">Tarih 1</label>
         <input type="radio" name="selectedDate" id="tarih1" value="tarih1">
 
@@ -70,8 +96,50 @@
 
         <br>
 
-        <input type="submit" value="Oyla">
+        <input type="button" value="Oyla" onclick="oylamaYap()">
     </form>
 
+    <div id="oySonuclari"></div>
+
+    <script>
+        const oylar = {
+            tarih1: 0,
+            tarih2: 0,
+            tarih3: 0
+        };
+
+        function oylamaYap() {
+            const form = document.getElementById('oylamaForm');
+            const selectedDate = form.querySelector('input[name="selectedDate"]:checked');
+
+            if (selectedDate) {
+                oylar[selectedDate.value]++;
+                alert('Teşekkürler!! Oy verilen tarih: ' + selectedDate.value);
+                guncelOySonuclari();
+            } else {
+                alert('Lütfen bir tarih seçin.');
+            }
+        }
+
+        function guncelOySonuclari() {
+            const oySonuclariDiv = document.getElementById('oySonuclari');
+            oySonuclariDiv.innerHTML = '<h2>Oy Sonuçları</h2>';
+
+            for (const tarih in oylar) {
+                const yuzde = (oylar[tarih] / toplamOySayisi()) * 100;
+                oySonuclariDiv.innerHTML += `<p>${tarih}: ${yuzde.toFixed(2)}%</p>`;
+            }
+        }
+
+        function toplamOySayisi() {
+            let toplam = 0;
+            for (const tarih in oylar) {
+                toplam += oylar[tarih];
+            }
+            return toplam;
+        }
+    </script>
+
 </body>
+
 </html>

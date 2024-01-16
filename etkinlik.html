@@ -171,31 +171,31 @@
     let selectedTime = [];
 
     function addSelectedDates() {
-  const selectedDatesContainer = document.getElementById('selected-dates');
+      const selectedDatesContainer = document.getElementById('selected-dates');
 
-  if (selectedTime === "") {
-    alert("Lütfen saat seçimi yapınız.");
-    return;
-  }
+      if (selectedTime === "") {
+        alert("Lütfen saat seçimi yapınız.");
+        return;
+      }
 
-  if (selectedDates.length === 0) {
-    alert("Lütfen en az bir tarih seçiniz.");
-    return;
-  }
+      if (selectedDates.length === 0) {
+        alert("Lütfen en az bir tarih seçiniz.");
+        return;
+      }
 
-  // Seçilen tarihleri ve saatleri birleştirerek eklenen satırı oluştur
-  const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTime}`);
-  const newRow = document.createElement('p');
-  newRow.textContent = formattedSelectedDates.join(', ');
+      // Seçilen tarihleri ve saatleri birleştirerek eklenen satırı oluştur
+      const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTime}`);
+      const newRow = document.createElement('p');
+      newRow.textContent = formattedSelectedDates.join(', ');
 
-  // Eski satırları silmeden yeni satırı ekleyin
-  selectedDatesContainer.appendChild(newRow);
+      // Eski satırları silmeden yeni satırı ekleyin
+      selectedDatesContainer.appendChild(newRow);
 
-  // Seçilen tarihleri ve saatleri oylamaolustur.html sayfasına gönder
-  const queryString = `selectedDates=${encodeURIComponent(JSON.stringify(selectedDates))}&selectedTime=${encodeURIComponent(selectedTime)}`;
-  const oylamaOluşturURL = `oylamaolustur.html?${queryString}`;
-  window.location.href = oylamaOluşturURL;
-}
+      // Seçilen tarihleri ve saatleri oylamaolustur.html sayfasına gönder
+      const queryString = `selectedDates=${encodeURIComponent(JSON.stringify(selectedDates))}&selectedTime=${encodeURIComponent(selectedTime)}`;
+      const oylamaOluşturURL = `oylamaolustur.html?${queryString}`;
+      window.location.href = oylamaOluşturURL;
+    }
     function redirectAndSave() {
       addSelectedDates();
 
@@ -305,4 +305,3 @@
 </body>
 
 </html>
-

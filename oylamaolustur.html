@@ -83,6 +83,12 @@
             cursor: pointer;
             border-radius: 5px;
         }
+
+
+        .invitee-inputs {
+            display: grid;
+            gap: 15px;
+        }
     </style>
 </head>
 <body>
@@ -92,41 +98,88 @@
             <p><a href="profil.php">Choice</a></p>
         </div>
         <div class="right-links">
-            <!-- You can add navigation links here if needed -->
+            <!-- Gerekirse buraya navigasyon linkleri ekleyebilirsiniz -->
         </div>
     </div>
 
     <div class="oylama-form">
         <h2>Oylama Oluştur</h2>
         <form method="post" action="">
-          <label for="oylamaAdi">ETKİNLİK ADI:</label>
-          <input type="text" id="oylamaAdi" name="oylamaAdi" required>
+            <label for="oylamaAdi">ETKİNLİK ADI:</label>
+            <input type="text" id="oylamaAdi" name="oylamaAdi" required>
     
-          <label for="secenekler">Davetli Kişiler:</label>
-          <input type="text" id="secenekler" name="secenekler" required>
+            <label for="secenekler">Davetli Kişiler:</label>
+            <input type="text" id="secenekler" name="secenekler" required>
         </form>
-      </div>
+    </div>
     
-      <div class="oylama-form">
+    <div class="oylama-form">
         <a href="etkinlik.html"><button class="btn">Etkinlik tarihi:</button></a>
         <input type="text" id="etkinlikTarihi" name="etkinlikTarihi" required>
-        <a href="oylama.html"><button class="btn" value="Oylama Oluştur" requried>Oylama Oluştur:</button></a>
-      </div>
-    
-      <script>
-        document.addEventListener('DOMContentLoaded', function () {
-          const urlParams = new URLSearchParams(window.location.search);
-          const selectedDatesParam = urlParams.get('selectedDates');
-          const selectedTimeParam = urlParams.get('selectedTime');
-          
-          if (selectedDatesParam && selectedTimeParam) {
-            const selectedDates = JSON.parse(decodeURIComponent(selectedDatesParam));
-            const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTimeParam}`);
+        
+        <!-- Oylama oluştur butonu ve JavaScript kodu -->
+        <button class="btn" id="oylamaOlusturBtn">Oylama Oluştur</button>
+
+        <!-- Bildirim mesajı için eklenen element -->
+        <div id="bildirimMesaji" style="display: none; margin-top: 10px;">
+            Etkinlik oylamanız başarıyla oluşturulmuştur! 
+            <a href="oylama.html">Oylama sayfasına gidin</a>
+        </div>
+    </div>
+
+       <script>
+   document.addEventListener('DOMContentLoaded', function () {
+            const oylamaAdiInput = document.getElementById('oylamaAdi');
+            const seceneklerInput = document.getElementById('secenekler');
             const etkinlikTarihiInput = document.getElementById('etkinlikTarihi');
-            etkinlikTarihiInput.value = formattedSelectedDates.join(', ');
-          }
+            const bildirimMesajiDiv = document.getElementById('bildirimMesaji');
+
+            oylamaAdiInput.value = localStorage.getItem('oylamaAdi') || '';
+            seceneklerInput.value = localStorage.getItem('secenekler') || '';
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedDatesParam = urlParams.get('selectedDates');
+            const selectedTimeParam = urlParams.get('selectedTime');
+
+            if (selectedDatesParam && selectedTimeParam) {
+                const selectedDates = JSON.parse(decodeURIComponent(selectedDatesParam));
+                const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTimeParam}`);
+                etkinlikTarihiInput.value = formattedSelectedDates.join(', ');
+
+                // Save selected dates and times to localStorage
+                localStorage.setItem('selectedDates', JSON.stringify(selectedDates));
+                localStorage.setItem('selectedTime', selectedTimeParam);
+            } else {
+                // Retrieve values from localStorage if they exist
+                const storedDates = localStorage.getItem('selectedDates');
+                const storedTime = localStorage.getItem('selectedTime');
+
+                if (storedDates && storedTime) {
+                    const formattedStoredDates = JSON.parse(storedDates).map(date => `${date} ${storedTime}`);
+                    etkinlikTarihiInput.value = formattedStoredDates.join(', ');
+                }
+            }
+          
+
+            // Save values to localStorage on input change
+            oylamaAdiInput.addEventListener('input', function () {
+                localStorage.setItem('oylamaAdi', oylamaAdiInput.value);
+            });
+
+            seceneklerInput.addEventListener('input', function () {
+                localStorage.setItem('secenekler', seceneklerInput.value);
+            });
+
+            document.getElementById('oylamaOlusturBtn').addEventListener('click', function () {
+                // Burada oylama oluşturma işlemleri yapılabilir
+
+                // Bildirim mesajını göster
+                bildirimMesajiDiv.style.display = 'block';
+            });
+
+            
         });
-      </script>
+    </script>
     
     </body>
     </html>
