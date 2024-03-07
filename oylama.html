@@ -78,6 +78,7 @@
             font-size: 16px;
         }
     </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </head>
 
 <body>
@@ -85,14 +86,17 @@
     <h1>Oy Kullan</h1>
 
     <form id="oylamaForm" action="#">
-        <label for="tarih1">Tarih 1</label>
+        <div id="oylarDiv">
+
+        </div>
+        <!--<label for="tarih1">Tarih 1</label>
         <input type="radio" name="selectedDate" id="tarih1" value="tarih1">
 
         <label for="tarih2">Tarih 2</label>
         <input type="radio" name="selectedDate" id="tarih2" value="tarih2">
 
         <label for="tarih3">Tarih 3</label>
-        <input type="radio" name="selectedDate" id="tarih3" value="tarih3">
+        <input type="radio" name="selectedDate" id="tarih3" value="tarih3">-->
 
         <br>
 
@@ -102,18 +106,27 @@
     <div id="oySonuclari"></div>
 
     <script>
-        const oylar = {
-            tarih1: 0,
-            tarih2: 0,
-            tarih3: 0
-        };
+
+        const oylar = localStorage.getItem('selectedEvent').split(',');
+        let newList = [];
+        oylar.forEach(function(item , index){
+            var $label = $("<label for = 'tarih"+index+"'>").text(item);
+            var $input = $('<input type="radio">').attr({name: 'selectedDate', id : 'tarih' + index, value : item});
+            $label.appendTo("#oylarDiv");
+            $input.appendTo("#oylarDiv");
+            newList.push({
+                date: item,
+                value :0
+            })
+        })
 
         function oylamaYap() {
             const form = document.getElementById('oylamaForm');
             const selectedDate = form.querySelector('input[name="selectedDate"]:checked');
 
             if (selectedDate) {
-                oylar[selectedDate.value]++;
+                newList.filter(s=>s.date == selectedDate.value)[0].value= parseInt(newList.filter(s=>s.date == selectedDate.value)[0].value) + 1;
+                //oylar[selectedDate.value]++;
                 alert('Teşekkürler!! Oy verilen tarih: ' + selectedDate.value);
                 guncelOySonuclari();
             } else {
@@ -125,17 +138,17 @@
             const oySonuclariDiv = document.getElementById('oySonuclari');
             oySonuclariDiv.innerHTML = '<h2>Oy Sonuçları</h2>';
 
-            for (const tarih in oylar) {
-                const yuzde = (oylar[tarih] / toplamOySayisi()) * 100;
-                oySonuclariDiv.innerHTML += `<p>${tarih}: ${yuzde.toFixed(2)}%</p>`;
-            }
+            newList.forEach(function(item){
+                const yuzde = (item.value / toplamOySayisi()) * 100;
+                oySonuclariDiv.innerHTML += `<p>${item.date}: ${yuzde.toFixed(2)}%</p>`;
+            
+            })
         }
 
         function toplamOySayisi() {
             let toplam = 0;
-            for (const tarih in oylar) {
-                toplam += oylar[tarih];
-            }
+            toplam = newList.filter(s=>s.value != 0).length;
+            
             return toplam;
         }
     </script>

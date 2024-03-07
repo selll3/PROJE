@@ -169,6 +169,7 @@
     let selectedDates = [];
     let currentMonth = 0; // Ocak
     let selectedTime = [];
+    let allDateInformation = [];
 
     function addSelectedDates() {
       const selectedDatesContainer = document.getElementById('selected-dates');
@@ -186,13 +187,29 @@
       // Seçilen tarihleri ve saatleri birleştirerek eklenen satırı oluştur
       const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTime}`);
       const newRow = document.createElement('p');
-      newRow.textContent = formattedSelectedDates.join(', ');
+      
 
+      var newText = ""
+      var dates = ""
+      var times = ""
+      allDateInformation.forEach(function(item){
+          if (newText == "") {
+              newText = item.date + " " + item.time;
+              dates = item.date;
+              times = item.time;
+          }
+          else{
+              newText = newText + ", " + item.date + " " + item.time;
+              dates = dates + "," + item.date;
+              times = times + "," + item.time;
+          }
+      })
+      newRow.textContent = newText;
       // Eski satırları silmeden yeni satırı ekleyin
       selectedDatesContainer.appendChild(newRow);
 
       // Seçilen tarihleri ve saatleri oylamaolustur.html sayfasına gönder
-      const queryString = `selectedDates=${encodeURIComponent(JSON.stringify(selectedDates))}&selectedTime=${encodeURIComponent(selectedTime)}`;
+      const queryString = `selectedDates=${dates}&selectedTime=${times}&allDateTime=${newText}`;
       const oylamaOluşturURL = `oylamaolustur.html?${queryString}`;
       window.location.href = oylamaOluşturURL;
     }
@@ -280,6 +297,19 @@
     function updateSelectedInfo(selectedDate) {
       const selectedDateInfo = document.getElementById('selected-date-info');
       selectedDateInfo.textContent = selectedDate ? `Seçilen Tarih: ${selectedDate} ${selectedTime}` : "";
+        if (selectedDate != "") {
+            var ifExist = allDateInformation.filter(s=>s.date == selectedDate);
+            if (ifExist.length != 0) {
+                allDateInformation.filter(s=>s.date == selectedDate)[0].time = selectedTime;
+            }
+            else{
+                allDateInformation.push({
+                    date : selectedDate,
+                    time : selectedTime
+                })
+            }
+            
+        }
     }
 
     function getMonthName(monthIndex) {

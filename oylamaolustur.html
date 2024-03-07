@@ -140,23 +140,27 @@
             const urlParams = new URLSearchParams(window.location.search);
             const selectedDatesParam = urlParams.get('selectedDates');
             const selectedTimeParam = urlParams.get('selectedTime');
+            const allDateTimeParam = urlParams.get('allDateTime');
 
             if (selectedDatesParam && selectedTimeParam) {
-                const selectedDates = JSON.parse(decodeURIComponent(selectedDatesParam));
-                const formattedSelectedDates = selectedDates.map(date => `${date} ${selectedTimeParam}`);
-                etkinlikTarihiInput.value = formattedSelectedDates.join(', ');
+                
+                const selectedDates = selectedDatesParam.split(',');
+                const selectedTimes = selectedTimeParam.split(',');
+                
+                etkinlikTarihiInput.value = allDateTimeParam;
 
                 // Save selected dates and times to localStorage
                 localStorage.setItem('selectedDates', JSON.stringify(selectedDates));
-                localStorage.setItem('selectedTime', selectedTimeParam);
+                localStorage.setItem('selectedTimes', JSON.stringify(selectedTimeParam));
+                localStorage.setItem('selectedEvent', allDateTimeParam);
             } else {
                 // Retrieve values from localStorage if they exist
                 const storedDates = localStorage.getItem('selectedDates');
-                const storedTime = localStorage.getItem('selectedTime');
+                const storedTime = localStorage.getItem('selectedTimes');
+                const storedEvent = localStorage.getItem('selectedEvent');
 
-                if (storedDates && storedTime) {
-                    const formattedStoredDates = JSON.parse(storedDates).map(date => `${date} ${storedTime}`);
-                    etkinlikTarihiInput.value = formattedStoredDates.join(', ');
+                if (storedEvent) {
+                    etkinlikTarihiInput.value = storedEvent.split(', ');
                 }
             }
           
